@@ -68,6 +68,7 @@ function App() {
   const containerRef = useRef();
   const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
   const [viewMode, setViewMode] = useState('graph');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -76,6 +77,7 @@ function App() {
         const height = Math.max(600, window.innerHeight - 300);
         setDimensions({ width, height });
       }
+      setIsMobile(window.innerWidth <= 1024);
     };
 
     updateDimensions();
@@ -580,8 +582,8 @@ function App() {
           Meet Visualizer
         </h1>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '350px 1fr', gap: '1.5rem' }}>
-          <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '1.5rem', height: 'fit-content' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '350px 1fr', gap: '1.5rem' }}>
+          <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '1.5rem', height: 'fit-content', maxWidth: isMobile ? '600px' : 'none', margin: isMobile ? '0 auto' : '0', width: isMobile ? '100%' : 'auto' }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#374151' }}>
               {editingId ? 'Upraviť meeting' : 'Pridať meeting'}
             </h2>
@@ -685,7 +687,7 @@ function App() {
             <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <div
                 onClick={handleExport}
-                style={{ width: '100%', backgroundColor: '#16a34a', color: 'white', padding: '0.5rem 1rem', borderRadius: '0.375rem', cursor: 'pointer', fontWeight: '500', textAlign: 'center', userSelect: 'none' }}
+                style={{ width: '100%', backgroundColor: '#16a34a', color: 'white', padding: '0.5rem 0.5rem', borderRadius: '0.375rem', cursor: 'pointer', fontWeight: '500', textAlign: 'center', userSelect: 'none', fontSize: '0.875rem' }}
               >
                 Exportovať data
               </div>
@@ -695,7 +697,7 @@ function App() {
                   type="file"
                   accept=".json"
                   onChange={handleImport}
-                  style={{ display: 'block', width: '100%', fontSize: '0.875rem', color: '#6b7280', cursor: 'pointer' }}
+                  style={{ display: 'block', width: '100%', fontSize: '0.75rem', color: '#6b7280', cursor: 'pointer' }}
                 />
               </label>
             </div>
